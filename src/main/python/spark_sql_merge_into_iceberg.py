@@ -113,6 +113,8 @@ def processBatch(data_frame, batch_id):
       print(f"[ERROR] {error_msg}")
       raise RuntimeError(error_msg)
     else:
+      # print(f"Table {TABLE_NAME} exists in {CATALOG}.{DATABASE}.")
+
       _df = spark.sql(f"SELECT * FROM {CATALOG}.{DATABASE}.{TABLE_NAME} LIMIT 0")
 
       #XXX: Apply De-duplication logic on input data to pick up the latest record based on timestamp and operation

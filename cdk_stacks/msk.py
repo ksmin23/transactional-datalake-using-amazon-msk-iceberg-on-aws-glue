@@ -148,20 +148,17 @@ class MSKProvisionedStack(Stack):
       encryption_info=msk_encryption_info,
       enhanced_monitoring='PER_TOPIC_PER_BROKER',
       logging_info=msk_logging_info,
-      #XXX: When creating a cluster, all vpcConnectivity auth schemes must be disabled.
-      # You can enable auth schemes after the cluster is created.
-      #
-      # client_authentication=aws_msk.CfnCluster.ClientAuthenticationProperty(
-      #   sasl=aws_msk.CfnCluster.SaslProperty(
-      #     iam=aws_msk.CfnCluster.IamProperty(
-      #       enabled=True
-      #     )
-      #   ),
-      #   #XXX: You must enable unauthenticated traffic explicitly to use client-authentication using SASL over TLS_PLAINTEXT
-      #   unauthenticated=aws_msk.CfnCluster.UnauthenticatedProperty(
-      #     enabled=False
-      #   )
-      # )
+      client_authentication=aws_msk.CfnCluster.ClientAuthenticationProperty(
+        sasl=aws_msk.CfnCluster.SaslProperty(
+          iam=aws_msk.CfnCluster.IamProperty(
+            enabled=True
+          )
+        ),
+        #XXX: You must enable unauthenticated traffic explicitly to use client-authentication using SASL over TLS_PLAINTEXT
+        unauthenticated=aws_msk.CfnCluster.UnauthenticatedProperty(
+          enabled=False
+        )
+      )
     )
 
     self.sg_msk_client = sg_msk_client

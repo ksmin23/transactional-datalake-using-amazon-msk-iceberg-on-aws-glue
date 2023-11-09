@@ -198,7 +198,7 @@ TrxDataLakeBastionHost
 GlueStreamingCDCtoIcebergS3Path
 GlueMSKConnection
 GlueStreamingMSKtoIcebergJobRole
-GlueIcebergeDatabase
+GlueIcebergDatabase
 GrantLFPermissionsOnGlueJobRole
 GlueStreamingJobMSKtoIceberg
 KafkaConnectorStack
@@ -214,7 +214,7 @@ Create an Aurora MySQL Cluster
 
 #### (Step 2) Creating Kafka cluster
 
-Create a MSK Cluster
+(1) Create a MSK Cluster
 
    <pre>
    (.venv) $ cdk deploy MSKAsGlueStreamingJobDataSource
@@ -226,37 +226,6 @@ in order to grant Kinesis Data Firehose to access Amazon MSK cluster.
 
 It will take at least `20~25` minutes to update the settings.
 Please wait until the MSK cluster status is `ACTIVE`.
-
-(1) Update **Security settings**
-
-<pre>
-import boto3
-
-cluster_arn = 'arn:aws:kafka:<i>{region}</i>:cluster/<i>{msk-cluster-name}</i>/{random-identifier}'
-region = '{<i>region</i>}'
-
-client = boto3.client('kafka', region_name=region)
-cluster_info = client.describe_cluster_v2(ClusterArn=cluster_arn)
-current_version = cluster_info['ClusterInfo']['CurrentVersion']
-
-client_authentication = {
-  "Sasl": {
-    "Scram": {
-      "Enabled": False
-    },
-    "Iam": {
-      "Enabled": True
-    }
-  },
-  "Unauthenticated": {
-    "Enabled": False
-  }
-}
-
-response = client.update_security(ClientAuthentication=client_authentication,
-                                  ClusterArn=cluster_arn,
-                                  CurrentVersion=current_version)
-</pre>
 
 (2) Update **Network settings**
 
@@ -455,8 +424,9 @@ Once MSK cluster **Security**, and **Network settings** has been successfully up
    * (step 2) Provision the Glue Streaming Job
 
      <pre>
-     (.venv) $ cdk deploy GlueStreamingMSKtoIcebergJobRole \
-                          GlueIcebergeDatabase \
+     (.venv) $ cdk deploy GlueMSKConnection \
+                          GlueStreamingMSKtoIcebergJobRole \
+                          GlueIcebergDatabase \
                           GrantLFPermissionsOnGlueJobRole \
                           GlueStreamingJobMSKtoIceberg
      </pre>

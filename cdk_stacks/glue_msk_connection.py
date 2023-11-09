@@ -55,7 +55,7 @@ class GlueMSKConnectionStack(Stack):
     connection_input_property = aws_glue.CfnConnection.ConnectionInputProperty(
       connection_type="KAFKA",
       connection_properties=connection_properties,
-      name="msk-serverless-connector",
+      name="msk-connector",
       physical_connection_requirements=aws_glue.CfnConnection.PhysicalConnectionRequirementsProperty(
         security_group_id_list=[sg_msk_client.security_group_id, sg_glue_cluster.security_group_id],
         subnet_id=subnet.subnet_id,

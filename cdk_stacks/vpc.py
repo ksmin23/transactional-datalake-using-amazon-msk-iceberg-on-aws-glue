@@ -28,7 +28,7 @@ class VpcStack(Stack):
     #   vpc_name=vpc_name
     # )
 
-    self.vpc = aws_ec2.Vpc(self, 'DMSAuroraMysqlToS3VPC',
+    self.vpc = aws_ec2.Vpc(self, 'TrxDataLakeVpc',
       ip_addresses=aws_ec2.IpAddresses.cidr("10.0.0.0/16"),
       max_azs=3,
 
