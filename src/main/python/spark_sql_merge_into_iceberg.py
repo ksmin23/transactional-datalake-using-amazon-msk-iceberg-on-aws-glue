@@ -123,8 +123,8 @@ def processBatch(data_frame, batch_id):
       cdc_df = stream_data_df.select(col('after.*'),
         col('op').alias('_op'),
         col('ts_ms').alias('_op_timestamp'))
-      cdc_df = cdc_df.withColumn('_op_timestamp', to_timestamp(col('_op_timestamp'))) \
-                     .withColumn('trans_datetime', to_timestamp(col('trans_datetime')))
+      cdc_df = cdc_df.withColumn('_op_timestamp', to_timestamp(col('_op_timestamp')/1e3)) \
+                     .withColumn('trans_datetime', to_timestamp(col('trans_datetime')/1e3))
 
       window = Window.partitionBy(PRIMARY_KEY).orderBy(desc("_op_timestamp"))
 
